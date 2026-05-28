@@ -1,4 +1,11 @@
+*.db
+assets/external/
+*.py[cod]
+.states
+.web
+__pycache__/
 node_modules
 dist
 coverage
 .env
+.venv/
