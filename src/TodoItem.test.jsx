@@ -7,7 +7,7 @@ describe('TodoItem', () => {
   it('text が画面に表示される', () => {
     const todo = { id: 1, text: '牛乳を買う', completed: false }
     render(<TodoItem todo={todo} onDelete={() => {}} onToggle={() => {}} />)
-    expect(screen.getByText('牛乳を買う')).toBeInTheDocument()
+    expect(screen.getByText('牛乳を買う?')).toBeInTheDocument()
   })
 
   it('削除ボタンが存在する', () => {
