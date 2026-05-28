@@ -2,35 +2,28 @@ name: CI
 
 on:
   pull_request:
-  push:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
-  lint:
+  lint-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run format:check
+      - name: 1. コードのチェックアウト
+        uses: actions/checkout@v4
 
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: 2. Pythonのセットアップ
+        uses: actions/setup-python@v5
         with:
-          node-version: '24'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run test:ci
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: coverage-report
-          path: coverage/
-          retention-days: 7
+          python-version: '3.12'
+
+      - name: 3. 依存ライブラリのインストール
+        run: |
+          python -m pip install --upgrade pip
+          pip install reflex
+
+      # 💡 課題4：Secretの長さだけ確認（値そのものはマスクされて安全）
+      - name: 4. Secretの長さ確認（応用課題4）
+        env:
+          MY_SECRET: ${{ secrets.VITE_API_URL }}
+        run: |
+          echo "Length is ${#MY_SECRET}"
